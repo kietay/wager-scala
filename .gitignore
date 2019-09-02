@@ -1,2 +1,37 @@
+# envVars stored in config file, do not commit
+*env_vars*
+*envVars*
+*envConfig*
+*env_config*
+
 *.class
 *.log
+
+target/
+build/
+
+# eclipse
+build
+.classpath
+.project
+.settings
+.worksheet
+
+# intellij idea
+*.log
+*.iml
+*.ipr
+*.iws
+.idea
+
+# mac
+.DS_Store
+
+# other?
+.history
+.scala_dependencies
+.cache
+.cache-main
+
+#general
+*.class
