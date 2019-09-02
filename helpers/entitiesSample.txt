@@ -1,0 +1,236 @@
+[
+{
+  "entities": [
+    {
+      "mentions": [
+        {
+          "text": {
+            "beginOffset": 0,
+            "content": "Mane"
+          },
+          "type": "PROPER"
+        }
+      ],
+      "metadata": {
+        "mid": "/m/0j3d1kt",
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Sadio_Man\u00e9"
+      },
+      "name": "Mane",
+      "salience": 0.7619693,
+      "type": "CONSUMER_GOOD"
+    },
+    {
+      "mentions": [
+        {
+          "text": {
+            "beginOffset": 20,
+            "content": "liverpool"
+          },
+          "type": "PROPER"
+        }
+      ],
+      "metadata": {
+        "mid": "/m/04ltf",
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Liverpool_F.C."
+      },
+      "name": "liverpool",
+      "salience": 0.23803067,
+      "type": "LOCATION"
+    },
+    {
+      "mentions": [
+        {
+          "text": {
+            "beginOffset": 14,
+            "content": "2"
+          },
+          "type": "TYPE_UNKNOWN"
+        }
+      ],
+      "metadata": {
+        "value": "2"
+      },
+      "name": "2",
+      "salience": 0.0,
+      "type": "NUMBER"
+    }
+  ],
+  "language": "en"
+}
+,
+{
+  "entities": [
+    {
+      "mentions": [
+        {
+          "text": {
+            "beginOffset": 0,
+            "content": "Arsenal"
+          },
+          "type": "PROPER"
+        }
+      ],
+      "metadata": {
+        "mid": "/m/0xbm",
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Arsenal_F.C."
+      },
+      "name": "Arsenal",
+      "salience": 0.7205782,
+      "type": "ORGANIZATION"
+    },
+    {
+      "mentions": [
+        {
+          "text": {
+            "beginOffset": 19,
+            "content": "league"
+          },
+          "type": "COMMON"
+        }
+      ],
+      "metadata": {},
+      "name": "league",
+      "salience": 0.27942184,
+      "type": "OTHER"
+    }
+  ],
+  "language": "en"
+}
+,
+{
+  "entities": [
+    {
+      "mentions": [
+        {
+          "text": {
+            "beginOffset": 0,
+            "content": "Salah"
+          },
+          "type": "PROPER"
+        }
+      ],
+      "metadata": {
+        "mid": "/m/0j3r_bk",
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Mohamed_Salah"
+      },
+      "name": "Salah",
+      "salience": 0.72943604,
+      "type": "PERSON"
+    },
+    {
+      "mentions": [
+        {
+          "text": {
+            "beginOffset": 10,
+            "content": "Firmino"
+          },
+          "type": "PROPER"
+        }
+      ],
+      "metadata": {
+        "mid": "/m/0gywqnq",
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Roberto_Firmino"
+      },
+      "name": "Firmino",
+      "salience": 0.270564,
+      "type": "PERSON"
+    }
+  ],
+  "language": "en"
+}
+,
+{
+  "entities": [
+    {
+      "mentions": [
+        {
+          "text": {
+            "beginOffset": 0,
+            "content": "Liverpool"
+          },
+          "type": "PROPER"
+        }
+      ],
+      "metadata": {
+        "mid": "/m/04lh6",
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Liverpool"
+      },
+      "name": "Liverpool",
+      "salience": 0.70117885,
+      "type": "LOCATION"
+    },
+    {
+      "mentions": [
+        {
+          "text": {
+            "beginOffset": 24,
+            "content": "more"
+          },
+          "type": "COMMON"
+        }
+      ],
+      "metadata": {},
+      "name": "more",
+      "salience": 0.29882115,
+      "type": "OTHER"
+    },
+    {
+      "mentions": [
+        {
+          "text": {
+            "beginOffset": 19,
+            "content": "2"
+          },
+          "type": "TYPE_UNKNOWN"
+        }
+      ],
+      "metadata": {
+        "value": "2"
+      },
+      "name": "2",
+      "salience": 0.0,
+      "type": "NUMBER"
+    }
+  ],
+  "language": "en"
+}
+,
+{
+  "entities": [
+    {
+      "mentions": [
+        {
+          "text": {
+            "beginOffset": 0,
+            "content": "Fabinho"
+          },
+          "type": "PROPER"
+        }
+      ],
+      "metadata": {
+        "mid": "/m/0l8n4rd",
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Fabinho_(footballer,_born_1993)"
+      },
+      "name": "Fabinho",
+      "salience": 0.84565455,
+      "type": "PERSON"
+    },
+    {
+      "mentions": [
+        {
+          "text": {
+            "beginOffset": 8,
+            "content": "yellow card"
+          },
+          "type": "COMMON"
+        }
+      ],
+      "metadata": {},
+      "name": "yellow card",
+      "salience": 0.15434544,
+      "type": "OTHER"
+    }
+  ],
+  "language": "en"
+}
+]
