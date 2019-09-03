@@ -10,4 +10,6 @@ object Settings {
   val apiUrl: String = sys.env("BETFAIR_API_URL")
   val isoUrl: String = sys.env("BETFAIR_ISO_URL")
 
+  val p12CertPath: String = sys.env("BETFAIR_P12_CERT")
+
 }

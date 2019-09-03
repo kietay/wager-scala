@@ -10,5 +10,6 @@ lazy val root = (project in file("."))
     name := "wager",
     libraryDependencies += scalaTest % Test,
     libraryDependencies += requests,
-    libraryDependencies += spray
+    libraryDependencies += spray,
+    libraryDependencies += apacheHttpClient
   )

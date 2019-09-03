@@ -4,7 +4,7 @@ import wager.betfair.Authenticate
 
 object Server extends App {
 
-  val loginResponse: requests.Response = Authenticate.login()
+  val loginResponse: String = Authenticate.login().getOrElse("Could not login")
 
   println(loginResponse)
 
