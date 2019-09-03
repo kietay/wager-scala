@@ -4,6 +4,7 @@
 *envConfig*
 *env_config*
 *.key
+*.csr
 
 *.class
 *.log
