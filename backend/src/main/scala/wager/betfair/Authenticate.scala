@@ -19,9 +19,45 @@ import java.security.KeyStore
 import java.security.SecureRandom
 import java.util
 
-import scala.util.{Success, Failure, Try}
+import akka.http.scaladsl.HttpsConnectionContext
+import akka.util.ByteString
+import akka.actor.ActorSystem
+import akka.http.scaladsl.Http
+import akka.http.scaladsl.model.{HttpRequest, HttpResponse, StatusCodes}
+import akka.stream.ActorMaterializer
+import akka.stream.scaladsl.{Sink, Source}
+import akka.http.scaladsl.marshalling.{Marshaller, ToEntityMarshaller}
+import play.api.libs.json.{JsError, JsResult, JsValue, Json, Reads, Writes}
+import akka.http.scaladsl.unmarshalling.{FromEntityUnmarshaller, Unmarshaller}
+import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport
+import wager.util.JsonSupport
+import akka.actor.ActorSystem
+import akka.http.scaladsl.Http
+import akka.http.scaladsl.marshalling.Marshal
+import akka.http.scaladsl.model._
+import akka.http.scaladsl.model.headers._
+import akka.http.scaladsl.unmarshalling.{FromResponseUnmarshaller, Unmarshal}
+import akka.stream.ActorMaterializer
+import HttpCharsets._
+import HttpMethods._
+import MediaTypes._
+import akka.http.scaladsl.unmarshalling._
 
-object Authenticate extends ServiceRequests {
+import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
+
+import scala.concurrent.ExecutionContext
+import scala.util.{Failure, Success, Try}
+
+
+case class LoginRequest(username: String, password: String)
+
+case class LoginResponse(token: String, product: String, status: String, error: String)
+
+object LoginResponse {
+  implicit val readsLoginResponse: Reads[LoginResponse] = Json.reads[LoginResponse]
+}
+
+object Authenticate extends ServiceRequests with JsonSupport {
 
   private val port = 443
 
@@ -72,5 +108,54 @@ object Authenticate extends ServiceRequests {
       kmf.getKeyManagers
     }
 
+  def loginWithAkka(): Try[String] = {
+
+    implicit val system: ActorSystem = ActorSystem("Login-system")
+    implicit val materializer: ActorMaterializer = ActorMaterializer()
+
+    implicit val executionContext: ExecutionContext = system.dispatcher
+
+    val accept = Accept(`application/json`)
+    val acceptCharset = `Accept-Charset`(`UTF-8`, HttpCharsetRange.`*`)
+    val xApplication = RawHeader("X-Application", Settings.appKey)
+
+    val headers = Seq(accept, acceptCharset, xApplication)
+
+    val httpsContext = new HttpsConnectionContext(sslContext())
+
+    val http = Http()
+    http.setDefaultClientHttpsContext(httpsContext)
+
+    val resFuture = Http().singleRequest(HttpRequest(
+        POST, uri = Settings.isoUrl,
+        entity = FormData(Map("username" -> Settings.username, "password" -> Settings.password)).toEntity(HttpCharsets.`UTF-8`),
+        headers = headers.toList)
+      )
+
+    resFuture.onComplete {
+      case Success(res) => println(res)
+      case Failure(_) => sys.error("No good hombre")
+    }
+
+    Success("Donezo")
+
+  }
+
+  val sslContext: () => SSLContext = () => {
+
+    val ctx = SSLContext.getInstance("TLS")
+
+    val keyManagers =
+      getKeyManagers("pkcs12", new FileInputStream(
+        new File("/Users/kieran/projects/wager/client-2048.p12")), "password"
+      ) match {
+        case Success(v) => v
+        case Failure(ex) => println("Could not acquire KeyManager"); throw ex
+      }
+
+    ctx.init(keyManagers, null, new SecureRandom)
+
+    ctx
+  }
 
 }

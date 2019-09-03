@@ -1,11 +1,14 @@
 package wager
 
-import wager.betfair.Authenticate
+import play.api.libs.json.{JsResult, JsValue, Reads}
+import wager.betfair.{Authenticate, LoginResponse}
 
 object Server extends App {
 
-  val loginResponse: String = Authenticate.login().getOrElse("Could not login")
+  // val loginResponse: String = Authenticate.loginWithAkka()
 
-  println(loginResponse)
+  Authenticate.loginWithAkka()
+
+  // println(loginResponse)
 
 }
