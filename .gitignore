@@ -3,6 +3,7 @@
 *envVars*
 *envConfig*
 *env_config*
+*.key
 
 *.class
 *.log
