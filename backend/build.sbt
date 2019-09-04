@@ -9,9 +9,7 @@ lazy val root = (project in file("."))
   .settings(
     name := "wager",
     libraryDependencies += scalaTest % Test,
-    libraryDependencies += requests,
     libraryDependencies += spray,
-    libraryDependencies += apacheHttpClient
   )
 
 // https://mvnrepository.com/artifact/com.typesafe.akka/akka-http

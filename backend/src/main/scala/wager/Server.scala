@@ -1,14 +1,24 @@
 package wager
 
-import play.api.libs.json.{JsResult, JsValue, Reads}
-import wager.betfair.Authenticate
+import akka.actor.ActorSystem
+import akka.stream.ActorMaterializer
+import wager.services.Betfair
 
+import scala.concurrent.{ExecutionContext, Await}
+import scala.concurrent.duration._
+
+/**
+  * Currently used to execute test code during development
+  */
 object Server extends App {
 
-  // val loginResponse: String = Authenticate.login().getOrElse("nop")
+  implicit val system: ActorSystem = ActorSystem("wager")
+  implicit val materializer: ActorMaterializer = ActorMaterializer()
 
-  Authenticate.loginWithAkka()
+  implicit val executionContext: ExecutionContext = system.dispatcher
 
-  // println(loginResponse)
+  val testRes = Betfair.login()
+
+  println(Await.result(testRes, 10.seconds))
 
 }

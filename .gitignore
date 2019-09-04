@@ -6,6 +6,7 @@
 *.key
 *.csr
 *.crt
+*.p12
 
 *.class
 *.log
