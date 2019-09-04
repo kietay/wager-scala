@@ -7,17 +7,17 @@ import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport
 import play.api.libs.json._
 
 
-/**
-  * Automatic to and from JSON marshalling/unmarshalling using an in-scope *play-json* protocol.
-  */
-object PlayJsonSupportWithError extends PlayJsonSupport {
-  final case class PlayJsonError(error: JsError) extends IllegalArgumentException {
-    override def getMessage: String =
-      JsError.toJson(error).toString()
-  }
-}
-
 trait JsonSupport {
+
+  /**
+    * Automatic to and from JSON marshalling/unmarshalling using an in-scope *play-json* protocol.
+    */
+  object PlayJsonSupportWithError extends PlayJsonSupport {
+    final case class PlayJsonError(error: JsError) extends IllegalArgumentException {
+      override def getMessage: String =
+        JsError.toJson(error).toString()
+    }
+  }
 
   import PlayJsonSupportWithError._
 

@@ -27,7 +27,6 @@ import akka.http.scaladsl.model.{HttpRequest, HttpResponse, StatusCodes}
 import akka.stream.ActorMaterializer
 import akka.stream.scaladsl.{Sink, Source}
 import akka.http.scaladsl.marshalling.{Marshaller, ToEntityMarshaller}
-import play.api.libs.json.{JsError, JsResult, JsValue, Json, Reads, Writes}
 import akka.http.scaladsl.unmarshalling.{FromEntityUnmarshaller, Unmarshaller}
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport
 import wager.util.JsonSupport
@@ -41,27 +40,22 @@ import akka.stream.ActorMaterializer
 import HttpCharsets._
 import HttpMethods._
 import MediaTypes._
+import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 import akka.http.scaladsl.unmarshalling._
-
 import de.heikoseeberger.akkahttpplayjson.PlayJsonSupport._
+import spray.json.{DefaultJsonProtocol, RootJsonFormat}
+import spray.json._
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent._
+import scala.concurrent.duration._
 import scala.util.{Failure, Success, Try}
 
 
-case class LoginRequest(username: String, password: String)
 
-case class LoginResponse(token: String, product: String, status: String, error: String)
-
-object LoginResponse {
-  implicit val readsLoginResponse: Reads[LoginResponse] = Json.reads[LoginResponse]
-}
-
-object Authenticate extends ServiceRequests with JsonSupport {
+object Authenticate extends JsonSupport {
 
   private val port = 443
 
-  // todo update http client used
   def login(): Try[String] = {
 
     val httpClient: DefaultHttpClient = new DefaultHttpClient()
@@ -108,7 +102,20 @@ object Authenticate extends ServiceRequests with JsonSupport {
       kmf.getKeyManagers
     }
 
+  case class LoginRequest(username: String, password: String)
+
+  case class LoginResponse(sessionToken: String, loginStatus: String)
+
   def loginWithAkka(): Try[String] = {
+
+    object LoginResponseFormat extends DefaultJsonProtocol with SprayJsonSupport {
+      implicit val loginResponseFormat: RootJsonFormat[LoginResponse] = jsonFormat2(LoginResponse)
+    }
+
+    import LoginResponseFormat._
+
+    implicit val loginResponseUnmarshaller: Unmarshaller[JsValue, LoginResponse] =
+      Unmarshaller.strict(jsValue => loginResponseFormat.read(jsValue))
 
     implicit val system: ActorSystem = ActorSystem("Login-system")
     implicit val materializer: ActorMaterializer = ActorMaterializer()
@@ -126,16 +133,17 @@ object Authenticate extends ServiceRequests with JsonSupport {
     val http = Http()
     http.setDefaultClientHttpsContext(httpsContext)
 
-    val resFuture = Http().singleRequest(HttpRequest(
-        POST, uri = Settings.isoUrl,
-        entity = FormData(Map("username" -> Settings.username, "password" -> Settings.password)).toEntity(HttpCharsets.`UTF-8`),
-        headers = headers.toList)
-      )
+    val responses = for {
+      res <- Http().singleRequest(HttpRequest(
+             POST, uri = Settings.isoUrl,
+             entity = FormData(Map("username" -> Settings.username, "password" -> Settings.password)).toEntity(HttpCharsets.`UTF-8`),
+             headers = headers.toList
+      ))
+    } yield Unmarshal(res).to[LoginResponse]
 
-    resFuture.onComplete {
-      case Success(res) => println(res)
-      case Failure(_) => sys.error("No good hombre")
-    }
+    val x = Await.result(responses, 10.seconds)
+
+    println(x)
 
     Success("Donezo")
 
